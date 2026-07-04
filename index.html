@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar | KAION</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="auth-page">
+    <main class="auth-shell">
+        <section class="auth-panel brand-panel">
+            <img class="brand-logo" src="https://image2url.com/r2/default/images/1775600257645-3c5e24f1-1b9f-426c-a46f-751de0409c8a.png" alt="KAION" width="150" height="150">
+            <p>Gestão inteligente do ciclo de vida de produtos para organizar ideias, receitas, testes, aprovações e lançamentos em um único lugar.</p>
+            <div class="brand-points">
+                <span>Funil de inovação</span>
+                <span>Receitas versionadas</span>
+                <span>Funil visual</span>
+            </div>
+        </section>
+
+        <section class="auth-panel">
+            <header class="auth-header">
+                <p class="eyebrow">SENAI BETIM</p>
+                <h2>Entrar</h2>
+                <p>Acesse o painel de gestao de produtos.</p>
+            </header>
+
+            <form action="php/login.php" method="POST" class="stack-form">
+                <label>
+                    Email
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+                <label>
+                    Senha
+                    <input type="password" name="senha" autocomplete="current-password" required>
+                </label>
+                <button class="btn primary" type="submit">Entrar</button>
+            </form>
+
+            <p id="mensagemLogin" class="form-message"></p>
+            <p class="auth-footer"><a href="recuperar_senha.html">Esqueci minha senha</a></p>
+            <p class="auth-footer">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
+        </section>
+    </main>
+    <script src="js/auth.js"></script>
+</body>
+</html>

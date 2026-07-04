@@ -1,0 +1,90 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #0F3D66;
+}
+
+.topo img {
+    width: 120px;
+}
+
+.topo nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+}
+.topo h2 {
+    font-size: 50px;
+    color: white;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+}
+
+
+.titulo {
+    margin-bottom: 30px;
+}
+
+.titulo h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.titulo p {
+    color: #777;
+}
+
+
+article {
+    margin-bottom: 25px;
+}
+
+article h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #0F3D66;
+}
+
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.footer-global {
+    text-align: center;
+    padding: 15px;
+    font-size: 13px;
+    color: #777;
+}
+
+.footer-global a {
+    color: #0F3D66;
+    text-decoration: none;
+}

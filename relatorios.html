@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios | KAION</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="logo text-logo" href="dashboard.html">KAION</a>
+            <nav>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="produtos.html">Produtos</a>
+                <a href="funil.html">Funil</a>
+                <a class="active" href="relatorios.html">Relatórios</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Números para decidir</p>
+                    <h1>Relatórios</h1>
+                </div>
+                <div class="user-actions">
+                    <button class="btn ghost" type="button" onclick="exportarPDF()">PDF</button>
+                    <button class="btn primary" type="button" onclick="exportarExcel()">Excel</button>
+                </div>
+            </header>
+
+            <section class="panel filters-row">
+                <input type="date" id="dataInicio">
+                <input type="date" id="dataFim">
+                <select id="filtroRelatorio">
+                    <option value="todos">Todos</option>
+                    <option value="ideia">Ideia</option>
+                    <option value="desenvolvimento">Desenvolvimento</option>
+                    <option value="teste">Teste</option>
+                    <option value="aprovacao">Aprovação</option>
+                    <option value="lancado">Lançado</option>
+                    <option value="arquivado">Arquivado</option>
+                </select>
+                <button class="btn primary" type="button" onclick="gerarRelatorio()">Gerar</button>
+            </section>
+
+            <section class="metric-grid">
+                <article class="metric-card"><span>Total</span><strong id="totalRelatorio">0</strong></article>
+                <article class="metric-card"><span>Em progresso</span><strong id="progressoRelatorio">0</strong></article>
+                <article class="metric-card"><span>Aprovados/lançados</span><strong id="concluidosRelatorio">0</strong></article>
+                <article class="metric-card"><span>Potencial</span><strong id="potencialRelatorio">R$ 0</strong></article>
+            </section>
+
+            <section class="split-grid">
+                <article class="panel">
+                    <div class="panel-heading"><h2>Status dos produtos</h2></div>
+                    <canvas id="graficoRelatorio" height="260"></canvas>
+                </article>
+                <article class="panel">
+                    <div class="panel-heading"><h2>Detalhamento</h2></div>
+                    <div class="table-wrap">
+                        <table id="tabelaRelatorio">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Status</th>
+                                    <th>Categoria</th>
+                                    <th>Responsável</th>
+                                    <th>Potencial</th>
+                                </tr>
+                            </thead>
+                            <tbody><tr><td colspan="5">Carregando...</td></tr></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/script_relatorios.js"></script>
+</body>
+</html>

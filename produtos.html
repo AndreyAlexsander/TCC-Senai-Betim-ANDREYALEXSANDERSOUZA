@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos | KAION</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="logo text-logo" href="dashboard.html">KAION</a>
+            <nav>
+                <a href="dashboard.html">Dashboard</a>
+                <a class="active" href="produtos.html">Produtos</a>
+                <a href="funil.html">Funil</a>
+                <a href="relatorios.html">Relatórios</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Tudo em um lugar</p>
+                    <h1>Produtos</h1>
+                </div>
+                <a class="btn primary" href="novo_produto.html">Novo produto</a>
+            </header>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <h2>Portfólio</h2>
+                    <div class="filters-inline">
+                        <input id="buscaProdutos" type="search" placeholder="Buscar por nome, categoria ou responsável">
+                        <select id="statusProdutos">
+                            <option value="">Todos</option>
+                            <option value="ideia">Ideia</option>
+                            <option value="desenvolvimento">Desenvolvimento</option>
+                            <option value="teste">Teste</option>
+                            <option value="aprovacao">Aprovação</option>
+                            <option value="lancado">Lançado</option>
+                            <option value="arquivado">Arquivado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Categoria</th>
+                                <th>Status</th>
+                                <th>Prioridade</th>
+                                <th>Responsável</th>
+                                <th>Atualizado</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <tr><td colspan="7">Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p id="productsCount" class="table-note">0 produtos</p>
+            </section>
+        </main>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/script_produtos.js"></script>
+</body>
+</html>

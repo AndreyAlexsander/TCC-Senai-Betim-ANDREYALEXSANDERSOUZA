@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar conta | KAION</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="auth-page">
+    <main class="auth-shell">
+        <section class="auth-panel brand-panel">
+            <img class="brand-logo" src="https://image2url.com/r2/default/images/1775600257645-3c5e24f1-1b9f-426c-a46f-751de0409c8a.png" alt="KAION" width="150" height="150">
+         
+            <p>Centralize dados técnicos, histórico de testes e decisões do ciclo de vida de produtos com segurança e simplicidade.</p>
+            <div class="brand-points">
+                <span>Baixo custo</span>
+                <span>Interface intuitiva</span>
+                <span>Decisão baseada em dados</span>
+            </div>
+        </section>
+
+        <section class="auth-panel">
+            <header class="auth-header">
+                <p class="eyebrow">Primeiro acesso</p>
+                <h2>Criar conta</h2>
+                <p>Cadastre o responsável pela gestão dos produtos.</p>
+            </header>
+
+            <form action="php/cadastro.php" method="POST" class="stack-form">
+                <label>
+                    Nome completo
+                    <input type="text" name="nome" autocomplete="name" required>
+                </label>
+                <label>
+                    Email
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+                <label>
+                    Senha
+                    <input type="password" name="senha" autocomplete="new-password" minlength="6" required>
+                </label>
+                <label>
+                    Confirmar senha
+                    <input type="password" name="confirmar" autocomplete="new-password" minlength="6" required>
+                </label>
+                <label class="terms">
+                    <input type="checkbox" name="termos" required>
+                    <a class="politica" href="termos.html">Política de Privacidade</a>
+                </label>
+                <button class="btn primary" type="submit">Criar conta</button>
+
+            </form>
+
+            <p id="mensagemCadastro" class="form-message"></p>
+            <p class="auth-footer">Já possui conta? <a href="index.html">Entrar</a></p>
+        </section>
+    </main>
+    <script src="js/auth.js"></script>
+</body>
+</html>
