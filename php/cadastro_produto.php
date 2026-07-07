@@ -11,9 +11,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $nome = post_string('nome', 180);
 $categoria = post_string('categoria', 120);
 $status = post_string('status', 30);
+$responsavel = post_string('responsavel', 120);
+$mercadoAlvo = post_string('mercado_alvo', 180);
 
-if ($nome === '' || $categoria === '' || !valid_status($status)) {
-    json_response(['sucesso' => false, 'mensagem' => 'Preencha os campos obrigatorios.'], 422);
+if (
+    !valid_fixed_value($nome, PRODUTOS_FIXOS) ||
+    !valid_fixed_value($categoria, CATEGORIAS_FIXAS) ||
+    !valid_fixed_value($responsavel, RESPONSAVEIS_FIXOS, true) ||
+    !valid_fixed_value($mercadoAlvo, MERCADOS_FIXOS, true) ||
+    !valid_status($status)
+) {
+    json_response(['sucesso' => false, 'mensagem' => 'Selecione valores validos para produto, categoria e responsavel.'], 422);
 }
 
 try {
@@ -29,9 +37,9 @@ try {
         $categoria,
         $status,
         post_string('prioridade', 20) ?: 'media',
-        post_string('responsavel', 120) ?: null,
+        $responsavel ?: null,
         post_string('descricao') ?: null,
-        post_string('mercado_alvo', 180) ?: null,
+        $mercadoAlvo ?: null,
         post_decimal('custo_estimado'),
         post_decimal('potencial_receita'),
         post_string('data_lancamento_prevista', 20) ?: null,

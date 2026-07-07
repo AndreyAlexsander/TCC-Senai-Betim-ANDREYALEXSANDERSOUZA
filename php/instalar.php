@@ -76,5 +76,69 @@ $pdo->exec(
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
 );
 
+$emailEmpresa = 'empresa@kaion.local';
+$stmt = $pdo->prepare('SELECT id FROM usuarios WHERE email = ? LIMIT 1');
+$stmt->execute([$emailEmpresa]);
+$usuarioEmpresaId = (int)($stmt->fetchColumn() ?: 0);
+
+if ($usuarioEmpresaId === 0) {
+    $stmt = $pdo->prepare('INSERT INTO usuarios (nome, email, senha, data_cadastro) VALUES (?, ?, ?, NOW())');
+    $stmt->execute(['KAION Salgados e Bebidas', $emailEmpresa, password_hash('kaion123', PASSWORD_DEFAULT)]);
+    $usuarioEmpresaId = (int)$pdo->lastInsertId();
+}
+
+$stmt = $pdo->prepare('SELECT COUNT(*) FROM produtos WHERE usuario_id = ?');
+$stmt->execute([$usuarioEmpresaId]);
+
+if ((int)$stmt->fetchColumn() === 0) {
+    $produtosExemplo = [
+        ['Coxinha de frango', 'Salgado frito', 'teste', 'alta', 'Andrey', 'Cantina escolar', 2.50, 1200.00, 'aprovado'],
+        ['Empada de palmito', 'Salgado assado', 'desenvolvimento', 'media', 'Nicolly', 'Encomendas para festas', 3.10, 900.00, 'ajustar'],
+        ['Pastel assado de carne', 'Salgado assado', 'ideia', 'media', 'Talyssa', 'Eventos corporativos', 2.80, 1100.00, 'nao_testado'],
+        ['Enroladinho de salsicha', 'Salgado assado', 'aprovacao', 'alta', 'Matheus', 'Venda no balcao', 2.20, 1000.00, 'aprovado'],
+        ['Kibe recheado', 'Salgado frito', 'lancado', 'alta', 'Pedro', 'Eventos corporativos', 3.40, 1500.00, 'aprovado'],
+        ['Suco natural de laranja', 'Bebida natural', 'teste', 'media', 'Nicolly', 'Cantina escolar', 2.00, 800.00, 'ajustar'],
+        ['Refrigerante lata', 'Bebida industrializada', 'lancado', 'baixa', 'Andrey', 'Venda no balcao', 3.00, 700.00, 'aprovado'],
+    ];
+
+    $stmtProduto = $pdo->prepare(
+        'INSERT INTO produtos
+        (usuario_id, nome, categoria, status, prioridade, responsavel, descricao, mercado_alvo, custo_estimado, potencial_receita, risco, resultado_teste, data_criacao, data_atualizacao)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())'
+    );
+    $stmtReceita = $pdo->prepare(
+        'INSERT INTO receitas (produto_id, usuario_id, versao, ingredientes, modo_preparo, observacoes_teste, resultado_teste, data_criacao)
+        VALUES (?, ?, ?, ?, ?, ?, ?, NOW())'
+    );
+
+    foreach ($produtosExemplo as $produto) {
+        [$nome, $categoria, $status, $prioridade, $responsavel, $mercado, $custo, $potencial, $resultado] = $produto;
+        $stmtProduto->execute([
+            $usuarioEmpresaId,
+            $nome,
+            $categoria,
+            $status,
+            $prioridade,
+            $responsavel,
+            'Produto de exemplo para gestao interna da empresa.',
+            $mercado,
+            $custo,
+            $potencial,
+            'baixo',
+            $resultado,
+        ]);
+
+        $stmtReceita->execute([
+            (int)$pdo->lastInsertId(),
+            $usuarioEmpresaId,
+            'v1',
+            'Ingredientes definidos pela producao.',
+            'Preparar, testar qualidade e registrar observacoes.',
+            'Exemplo usado para apresentacao do TCC.',
+            $resultado,
+        ]);
+    }
+}
+
 echo 'KAION instalado/atualizado com sucesso. Apague ou renomeie php/instalar.php depois da instalacao.';
 ?>

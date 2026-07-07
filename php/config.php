@@ -4,10 +4,44 @@ declare(strict_types=1);
 ini_set('display_errors', '0');
 date_default_timezone_set('America/Sao_Paulo');
 
-$host = 'sql210.infinityfree.com';
-$dbname = 'if0_42336177_kaion';
-$username = 'if0_42336177';
-$password = 'projetotcc0410';
+$host = 'sql111.infinityfree.com';
+$dbname = 'if0_41761105_kaion';
+$username = 'if0_41761105';
+$password = 'tcckaion';
+
+const PRODUTOS_FIXOS = [
+    'Coxinha de frango',
+    'Empada de palmito',
+    'Pastel assado de carne',
+    'Enroladinho de salsicha',
+    'Kibe recheado',
+    'Pao de queijo',
+    'Suco natural de laranja',
+    'Refrigerante lata',
+    'Agua mineral',
+];
+
+const CATEGORIAS_FIXAS = [
+    'Salgado frito',
+    'Salgado assado',
+    'Bebida natural',
+    'Bebida industrializada',
+];
+
+const RESPONSAVEIS_FIXOS = [
+    'Andrey',
+    'Nicolly',
+    'Talyssa',
+    'Matheus',
+    'Pedro',
+];
+
+const MERCADOS_FIXOS = [
+    'Cantina escolar',
+    'Eventos corporativos',
+    'Encomendas para festas',
+    'Venda no balcao',
+];
 
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
@@ -68,5 +102,14 @@ function post_decimal(string $key): ?float
 function valid_status(string $status): bool
 {
     return in_array($status, ['ideia', 'desenvolvimento', 'teste', 'aprovacao', 'lancado', 'arquivado'], true);
+}
+
+function valid_fixed_value(string $value, array $allowed, bool $allowEmpty = false): bool
+{
+    if ($allowEmpty && $value === '') {
+        return true;
+    }
+
+    return in_array($value, $allowed, true);
 }
 ?>

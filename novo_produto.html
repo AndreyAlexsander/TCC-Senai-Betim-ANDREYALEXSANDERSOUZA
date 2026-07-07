@@ -32,8 +32,29 @@
                 <section>
                     <h2>Informações principais</h2>
                     <div class="form-grid">
-                        <label>Nome do produto<input name="nome" required></label>
-                        <label>Categoria<input name="categoria" required></label>
+                        <label>Nome do produto
+                            <select name="nome" required>
+                                <option value="">Selecione</option>
+                                <option value="Coxinha de frango">Coxinha de frango</option>
+                                <option value="Empada de palmito">Empada de palmito</option>
+                                <option value="Pastel assado de carne">Pastel assado de carne</option>
+                                <option value="Enroladinho de salsicha">Enroladinho de salsicha</option>
+                                <option value="Kibe recheado">Kibe recheado</option>
+                                <option value="Pao de queijo">Pao de queijo</option>
+                                <option value="Suco natural de laranja">Suco natural de laranja</option>
+                                <option value="Refrigerante lata">Refrigerante lata</option>
+                                <option value="Agua mineral">Agua mineral</option>
+                            </select>
+                        </label>
+                        <label>Categoria
+                            <select name="categoria" required>
+                                <option value="">Selecione</option>
+                                <option value="Salgado frito">Salgado frito</option>
+                                <option value="Salgado assado">Salgado assado</option>
+                                <option value="Bebida natural">Bebida natural</option>
+                                <option value="Bebida industrializada">Bebida industrializada</option>
+                            </select>
+                        </label>
                         <label>Status
                             <select name="status" required>
                                 <option value="ideia">Ideia</option>
@@ -51,8 +72,25 @@
                                 <option value="baixa">Baixa</option>
                             </select>
                         </label>
-                        <label>Responsável<input name="responsavel"></label>
-                        <label>Mercado alvo<input name="mercado_alvo" placeholder="Ex.: varejo, food service, saudavel"></label>
+                        <label>Responsável
+                            <select name="responsavel">
+                                <option value="">Selecione</option>
+                                <option value="Andrey">Andrey</option>
+                                <option value="Nicolly">Nicolly</option>
+                                <option value="Talyssa">Talyssa</option>
+                                <option value="Matheus">Matheus</option>
+                                <option value="Pedro">Pedro</option>
+                            </select>
+                        </label>
+                        <label>Mercado alvo
+                            <select name="mercado_alvo">
+                                <option value="">Selecione</option>
+                                <option value="Cantina escolar">Cantina escolar</option>
+                                <option value="Eventos corporativos">Eventos corporativos</option>
+                                <option value="Encomendas para festas">Encomendas para festas</option>
+                                <option value="Venda no balcao">Venda no balcao</option>
+                            </select>
+                        </label>
                     </div>
                     <label>Descrição<textarea name="descricao" rows="4"></textarea></label>
                 </section>

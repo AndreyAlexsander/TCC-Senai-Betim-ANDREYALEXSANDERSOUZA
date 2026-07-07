@@ -11,11 +11,20 @@ $email = strtolower(trim((string)($_POST['email'] ?? '')));
 $senha = (string)($_POST['senha'] ?? '');
 
 try {
-    $stmt = $pdo->prepare('SELECT id, nome, senha FROM usuarios WHERE LOWER(email) = ? LIMIT 1');
+    $stmt = $pdo->prepare('SELECT id, nome, email, senha FROM usuarios WHERE LOWER(email) = ? LIMIT 1');
     $stmt->execute([$email]);
     $usuario = $stmt->fetch();
+    $senhaCorreta = $usuario && password_verify($senha, $usuario['senha']);
+    $senhaInicialEmpresa = $usuario
+        && strtolower((string)$usuario['email']) === 'empresa@kaion.local'
+        && hash_equals((string)$usuario['senha'], $senha);
 
-    if ($usuario && password_verify($senha, $usuario['senha'])) {
+    if ($senhaCorreta || $senhaInicialEmpresa) {
+        if ($senhaInicialEmpresa) {
+            $stmt = $pdo->prepare('UPDATE usuarios SET senha = ? WHERE id = ?');
+            $stmt->execute([password_hash($senha, PASSWORD_DEFAULT), (int)$usuario['id']]);
+        }
+
         session_regenerate_id(true);
         $_SESSION['logado'] = true;
         $_SESSION['usuario_id'] = (int) $usuario['id'];

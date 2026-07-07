@@ -22,7 +22,7 @@
             <header class="auth-header">
                 <p class="eyebrow">SENAI BETIM</p>
                 <h2>Entrar</h2>
-                <p>Acesse o painel de gestao de produtos.</p>
+                <p>Acesse o painel interno de gestao de salgados e bebidas.</p>
             </header>
 
             <form action="php/login.php" method="POST" class="stack-form">
@@ -34,12 +34,16 @@
                     Senha
                     <input type="password" name="senha" autocomplete="current-password" required>
                 </label>
+                <label class="terms">
+                    <input type="checkbox" required>
+                    Aceito os <a class="politica" href="termos.html" target="_blank" rel="noopener noreferrer">Termos de Uso</a>
+                </label>
                 <button class="btn primary" type="submit">Entrar</button>
             </form>
 
             <p id="mensagemLogin" class="form-message"></p>
+            <p class="auth-footer">Acesso interno da empresa. Use o usuario fixo criado no banco.</p>
             <p class="auth-footer"><a href="recuperar_senha.html">Esqueci minha senha</a></p>
-            <p class="auth-footer">Ainda não tem conta? <a href="cadastro.html">Criar conta</a></p>
         </section>
     </main>
     <script src="js/auth.js"></script>
