@@ -8,28 +8,31 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function carregarProdutos() {
-    const response = await fetch('php/produtos.php');
-    const data = await response.json();
-    produtosCache = data.produtos || [];
+    const resposta = await fetch('php/produtos.php');
+    const dados = await resposta.json();
+
+    produtosCache = dados.produtos || [];
     renderTabela();
 }
 
 function renderTabela() {
-    const tbody = document.getElementById('productsTable');
+    const tabela = document.getElementById('productsTable');
     const busca = document.getElementById('buscaProdutos').value.toLowerCase();
     const status = document.getElementById('statusProdutos').value;
+
     const produtos = produtosCache.filter(produto => {
         const texto = `${produto.nome} ${produto.categoria} ${produto.responsavel || ''}`.toLowerCase();
         return (!busca || texto.includes(busca)) && (!status || produto.status === status);
     });
 
     document.getElementById('productsCount').textContent = `${produtos.length} produto(s)`;
+
     if (!produtos.length) {
-        tbody.innerHTML = '<tr><td colspan="7">Nenhum produto encontrado.</td></tr>';
+        tabela.innerHTML = '<tr><td colspan="7">Nenhum produto encontrado.</td></tr>';
         return;
     }
 
-    tbody.innerHTML = produtos.map(produto => `
+    tabela.innerHTML = produtos.map(produto => `
         <tr>
             <td><strong>${escapeHtml(produto.nome)}</strong><br><span class="table-note">${escapeHtml(produto.mercado_alvo || '')}</span></td>
             <td>${escapeHtml(produto.categoria)}</td>
@@ -46,14 +49,16 @@ function renderTabela() {
 }
 
 async function deletarProduto(id) {
-    if (!confirm('Excluir este produto e seu histórico?')) return;
-    const body = new URLSearchParams({ id });
-    const response = await fetch('php/deletar_produto.php', { method: 'POST', body });
-    const data = await response.json();
-    if (data.sucesso) {
-        showToast('Produto excluido.');
+    if (!confirm('Tem certeza que deseja excluir este produto e o histórico dele?')) return;
+
+    const corpo = new URLSearchParams({ id });
+    const resposta = await fetch('php/deletar_produto.php', { method: 'POST', body: corpo });
+    const dados = await resposta.json();
+
+    if (dados.sucesso) {
+        showToast('Produto excluído.');
         await carregarProdutos();
     } else {
-        alert(data.mensagem || 'Erro ao excluir.');
+        alert(dados.mensagem || 'Erro ao excluir.');
     }
 }

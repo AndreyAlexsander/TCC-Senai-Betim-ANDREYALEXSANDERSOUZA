@@ -3,17 +3,17 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function carregarDashboard() {
-    const response = await fetch('php/produtos.php');
-    const data = await response.json();
-    const stats = data.stats || {};
+    const resposta = await fetch('php/produtos.php');
+    const dados = await resposta.json();
+    const resumo = dados.stats || {};
 
-    document.getElementById('totalProdutos').textContent = stats.total || 0;
-    document.getElementById('ideia').textContent = stats.ideia || 0;
-    document.getElementById('teste').textContent = stats.teste || 0;
-    document.getElementById('lancados').textContent = stats.lancado || 0;
+    document.getElementById('totalProdutos').textContent = resumo.total || 0;
+    document.getElementById('ideia').textContent = resumo.ideia || 0;
+    document.getElementById('teste').textContent = resumo.teste || 0;
+    document.getElementById('lancados').textContent = resumo.lancado || 0;
 
-    renderRecentes(data.produtos || []);
-    renderFunilResumo(stats);
+    renderRecentes(dados.produtos || []);
+    renderFunilResumo(resumo);
 }
 
 function renderRecentes(produtos) {
@@ -36,15 +36,16 @@ function renderRecentes(produtos) {
     `).join('');
 }
 
-function renderFunilResumo(stats) {
+function renderFunilResumo(resumo) {
     const container = document.getElementById('funilResumo');
-    const total = Math.max(Number(stats.total || 0), 1);
+    const total = Math.max(Number(resumo.total || 0), 1);
+
     container.innerHTML = STATUS_ORDER.map(status => {
-        const value = Number(stats[status] || 0);
+        const quantidade = Number(resumo[status] || 0);
         return `
             <div class="bar-row">
-                <div class="bar-label"><span>${statusLabel(status)}</span><span>${value}</span></div>
-                <div class="bar-track"><div class="bar-fill" style="width:${(value / total) * 100}%"></div></div>
+                <div class="bar-label"><span>${statusLabel(status)}</span><span>${quantidade}</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width:${(quantidade / total) * 100}%"></div></div>
             </div>
         `;
     }).join('');

@@ -1,14 +1,15 @@
-const messages = {
+const mensagens = {
     credenciais: 'Email ou senha incorretos.',
     servidor: 'Não foi possível concluir a operação agora.'
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const key = params.get('error') || params.get('success');
-    const target = document.getElementById('mensagemLogin');
+    const parametros = new URLSearchParams(window.location.search);
+    const aviso = parametros.get('error') || parametros.get('success');
+    const campoMensagem = document.getElementById('mensagemLogin');
 
-    if (!target || !messages[key]) return;
-    target.textContent = messages[key];
-    target.className = `form-message ${params.get('error') ? 'error' : 'success'}`;
+    if (!campoMensagem || !mensagens[aviso]) return;
+
+    campoMensagem.textContent = mensagens[aviso];
+    campoMensagem.className = `form-message ${parametros.get('error') ? 'error' : 'success'}`;
 });

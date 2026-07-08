@@ -1,4 +1,4 @@
-const STATUS = {
+const NOMES_STATUS = {
     ideia: 'Ideia',
     desenvolvimento: 'Desenvolvimento',
     teste: 'Teste',
@@ -7,7 +7,11 @@ const STATUS = {
     arquivado: 'Arquivado'
 };
 
-const STATUS_ORDER = ['ideia', 'desenvolvimento', 'teste', 'aprovacao', 'lancado', 'arquivado'];
+const ORDEM_STATUS = ['ideia', 'desenvolvimento', 'teste', 'aprovacao', 'lancado', 'arquivado'];
+
+
+const STATUS = NOMES_STATUS;
+const STATUS_ORDER = ORDEM_STATUS;
 
 function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -20,7 +24,7 @@ function escapeHtml(value) {
 }
 
 function statusLabel(status) {
-    return STATUS[status] || status || 'Sem status';
+    return NOMES_STATUS[status] || status || 'Sem status';
 }
 
 function statusPill(status) {
@@ -47,21 +51,25 @@ function showToast(message) {
 }
 
 async function requireLogin() {
-    const response = await fetch('php/verificar_login.php');
-    const data = await response.json();
-    if (!data.logado) {
+    const resposta = await fetch('php/verificar_login.php');
+    const dados = await resposta.json();
+
+    if (!dados.logado) {
         window.location.href = 'index.html';
         return null;
     }
-    const userName = document.getElementById('userNome');
-    if (userName) userName.textContent = data.nome;
-    return data;
+
+    const nomeUsuario = document.getElementById('userNome');
+    if (nomeUsuario) nomeUsuario.textContent = dados.nome;
+
+    return dados;
 }
 
-function debounce(fn, wait = 250) {
-    let timeout;
+function debounce(funcao, tempo = 250) {
+    let temporizador;
+
     return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn(...args), wait);
+        clearTimeout(temporizador);
+        temporizador = setTimeout(() => funcao(...args), tempo);
     };
 }

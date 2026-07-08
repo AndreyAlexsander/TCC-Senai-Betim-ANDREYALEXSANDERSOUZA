@@ -5,7 +5,7 @@ require_once 'config.php';
 $usuarioId = require_auth();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    json_response(['sucesso' => false, 'mensagem' => 'Método inválido'], 405);
+    json_response(['sucesso' => false, 'mensagem' => 'Esta página só aceita cadastro pelo formulário.'], 405);
 }
 
 $nome = post_string('nome', 180);
@@ -21,17 +21,18 @@ if (
     !valid_fixed_value($mercadoAlvo, MERCADOS_FIXOS, true) ||
     !valid_status($status)
 ) {
-    json_response(['sucesso' => false, 'mensagem' => 'Selecione valores validos para produto, categoria e responsavel.'], 422);
+    json_response(['sucesso' => false, 'mensagem' => 'Confira produto, categoria, responsável, mercado e status.'], 422);
 }
 
 try {
     $pdo->beginTransaction();
-    $stmt = $pdo->prepare(
+
+    $cadastroProduto = $pdo->prepare(
         'INSERT INTO produtos
         (usuario_id, nome, categoria, status, prioridade, responsavel, descricao, mercado_alvo, custo_estimado, potencial_receita, data_lancamento_prevista, risco, resultado_teste, data_criacao, data_atualizacao)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())'
     );
-    $stmt->execute([
+    $cadastroProduto->execute([
         $usuarioId,
         $nome,
         $categoria,
@@ -48,12 +49,13 @@ try {
     ]);
 
     $produtoId = (int) $pdo->lastInsertId();
-    $stmt = $pdo->prepare(
+
+    $cadastroReceita = $pdo->prepare(
         'INSERT INTO receitas
         (produto_id, usuario_id, versao, ingredientes, modo_preparo, observacoes_teste, resultado_teste, data_criacao)
         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())'
     );
-    $stmt->execute([
+    $cadastroReceita->execute([
         $produtoId,
         $usuarioId,
         post_string('versao_receita', 30) ?: 'v1',
@@ -69,7 +71,8 @@ try {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
+
     error_log('Erro cadastro produto KAION: ' . $e->getMessage());
-    json_response(['sucesso' => false, 'mensagem' => 'Erro ao salvar produto.'], 500);
+    json_response(['sucesso' => false, 'mensagem' => 'Não deu para salvar o produto agora.'], 500);
 }
 ?>

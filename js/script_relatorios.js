@@ -6,24 +6,29 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function gerarRelatorio() {
-    const params = new URLSearchParams({
+    const filtros = new URLSearchParams({
         dataInicio: document.getElementById('dataInicio').value,
         dataFim: document.getElementById('dataFim').value,
         status: document.getElementById('filtroRelatorio').value
     });
 
-    const response = await fetch(`php/relatorios.php?${params.toString()}`);
-    relatorioAtual = await response.json();
+    const resposta = await fetch(`php/relatorios.php?${filtros.toString()}`);
+    relatorioAtual = await resposta.json();
+
     atualizarResumo(relatorioAtual.stats || {});
     atualizarTabela(relatorioAtual.produtos || []);
     renderGrafico(relatorioAtual.stats || {});
 }
 
-function atualizarResumo(stats) {
-    document.getElementById('totalRelatorio').textContent = stats.total || 0;
-    document.getElementById('progressoRelatorio').textContent = Number(stats.desenvolvimento || 0) + Number(stats.teste || 0) + Number(stats.aprovacao || 0);
-    document.getElementById('concluidosRelatorio').textContent = stats.lancado || 0;
-    document.getElementById('potencialRelatorio').textContent = formatCurrency(stats.potencial || 0);
+function atualizarResumo(resumo) {
+    const emAndamento = Number(resumo.desenvolvimento || 0)
+        + Number(resumo.teste || 0)
+        + Number(resumo.aprovacao || 0);
+
+    document.getElementById('totalRelatorio').textContent = resumo.total || 0;
+    document.getElementById('progressoRelatorio').textContent = emAndamento;
+    document.getElementById('concluidosRelatorio').textContent = resumo.lancado || 0;
+    document.getElementById('potencialRelatorio').textContent = formatCurrency(resumo.potencial || 0);
 }
 
 function atualizarTabela(produtos) {
@@ -44,16 +49,18 @@ function atualizarTabela(produtos) {
     `).join('');
 }
 
-function renderGrafico(stats) {
-    const ctx = document.getElementById('graficoRelatorio');
+function renderGrafico(resumo) {
+    const grafico = document.getElementById('graficoRelatorio');
+
     if (graficoRelatorio) graficoRelatorio.destroy();
-    graficoRelatorio = new Chart(ctx, {
+
+    graficoRelatorio = new Chart(grafico, {
         type: 'bar',
         data: {
             labels: STATUS_ORDER.map(statusLabel),
             datasets: [{
                 label: 'Produtos',
-                data: STATUS_ORDER.map(status => Number(stats[status] || 0)),
+                data: STATUS_ORDER.map(status => Number(resumo[status] || 0)),
                 backgroundColor: ['#b45309', '#0e7490', '#ca8a04', '#4f46e5', '#15803d', '#64748b']
             }]
         },
@@ -67,13 +74,15 @@ function renderGrafico(stats) {
 
 function exportarPDF() {
     if (!window.jspdf) {
-        alert('Biblioteca de PDF não carregada.');
+        alert('A biblioteca de PDF não carregou.');
         return;
     }
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
+
     doc.setFontSize(18);
-    doc.text('Relatorio KAION', 14, 18);
+    doc.text('Relatório KAION', 14, 18);
     doc.setFontSize(10);
     doc.text(`Gerado em ${new Date().toLocaleDateString('pt-BR')}`, 14, 27);
     doc.text(`Total: ${relatorioAtual.stats.total || 0}`, 14, 38);
@@ -88,10 +97,11 @@ function exportarPDF() {
 }
 
 function exportarExcel() {
-    const params = new URLSearchParams({
+    const filtros = new URLSearchParams({
         dataInicio: document.getElementById('dataInicio').value,
         dataFim: document.getElementById('dataFim').value,
         status: document.getElementById('filtroRelatorio').value
     });
-    window.location.href = `php/exportar_excel.php?${params.toString()}`;
+
+    window.location.href = `php/exportar_excel.php?${filtros.toString()}`;
 }

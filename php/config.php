@@ -43,6 +43,7 @@ const MERCADOS_FIXOS = [
     'Venda no balcao',
 ];
 
+// Sessão usada nas páginas internas do sistema.
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
@@ -67,7 +68,7 @@ try {
     );
 } catch (PDOException $e) {
     http_response_code(500);
-    echo 'Erro interno de conexão.';
+    echo 'Não foi possível conectar com o banco de dados.';
     exit;
 }
 
@@ -82,21 +83,22 @@ function json_response(array $payload, int $status = 200): void
 function require_auth(): int
 {
     if (empty($_SESSION['logado']) || empty($_SESSION['usuario_id'])) {
-        json_response(['sucesso' => false, 'mensagem' => 'Não autorizado'], 401);
+        json_response(['sucesso' => false, 'mensagem' => 'Você precisa fazer login.'], 401);
     }
+
     return (int) $_SESSION['usuario_id'];
 }
 
 function post_string(string $key, int $max = 5000): string
 {
-    $value = trim((string)($_POST[$key] ?? ''));
-    return function_exists('mb_substr') ? mb_substr($value, 0, $max, 'UTF-8') : substr($value, 0, $max);
+    $valor = trim((string)($_POST[$key] ?? ''));
+    return function_exists('mb_substr') ? mb_substr($valor, 0, $max, 'UTF-8') : substr($valor, 0, $max);
 }
 
 function post_decimal(string $key): ?float
 {
-    $value = str_replace(',', '.', trim((string)($_POST[$key] ?? '')));
-    return $value === '' ? null : (float) $value;
+    $valor = str_replace(',', '.', trim((string)($_POST[$key] ?? '')));
+    return $valor === '' ? null : (float) $valor;
 }
 
 function valid_status(string $status): bool

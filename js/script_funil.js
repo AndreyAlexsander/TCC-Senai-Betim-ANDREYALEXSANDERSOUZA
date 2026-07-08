@@ -1,4 +1,4 @@
-let draggedCard = null;
+let cardArrastado = null;
 let produtosFunil = [];
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -9,12 +9,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function carregarFunil() {
-    const params = new URLSearchParams({
+    const filtros = new URLSearchParams({
         busca: document.getElementById('buscaFunil').value,
         status: document.getElementById('filtroStatus').value
     });
-    const response = await fetch(`php/funil_produtos.php?${params.toString()}`);
-    produtosFunil = await response.json();
+
+    const resposta = await fetch(`php/funil_produtos.php?${filtros.toString()}`);
+    produtosFunil = await resposta.json();
     renderizarKanban();
 }
 
@@ -34,12 +35,12 @@ function renderizarKanban() {
 
     document.querySelectorAll('.kanban-card').forEach(card => {
         card.addEventListener('dragstart', () => {
-            draggedCard = card;
+            cardArrastado = card;
             card.classList.add('dragging');
         });
         card.addEventListener('dragend', () => {
             card.classList.remove('dragging');
-            draggedCard = null;
+            cardArrastado = null;
         });
     });
 
@@ -69,18 +70,20 @@ function cardProduto(produto) {
 async function moverProduto(event) {
     event.preventDefault();
     event.currentTarget.classList.remove('drag-over');
-    if (!draggedCard) return;
+    if (!cardArrastado) return;
 
-    const body = new URLSearchParams({
-        id: draggedCard.dataset.id,
+    const corpo = new URLSearchParams({
+        id: cardArrastado.dataset.id,
         status: event.currentTarget.dataset.status
     });
-    const response = await fetch('php/atualizar_status.php', { method: 'POST', body });
-    const data = await response.json();
-    if (data.sucesso) {
+
+    const resposta = await fetch('php/atualizar_status.php', { method: 'POST', body: corpo });
+    const dados = await resposta.json();
+
+    if (dados.sucesso) {
         showToast('Status atualizado.');
         carregarFunil();
     } else {
-        alert(data.mensagem || 'Erro ao atualizar.');
+        alert(dados.mensagem || 'Erro ao atualizar.');
     }
 }
